@@ -1,7 +1,7 @@
 # Личный проект «Код и Магия» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Ирина Жердева](https://up.htmlacademy.ru/javascript/5/user/199052).
-* Наставник: `Неизвестно`.
+* Наставник: `Иван Гунченко`.
 
 ---
 
