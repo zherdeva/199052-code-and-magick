@@ -1,9 +1,10 @@
 function getMessage(a,b){
-if(a == true) {
+if(typeof a == 'boolean') {
+if(a) {
    return "Я попал в " + b;
-}
-if(a == false) {
+ } else {
 return "Я никуда не попал";
+}
 }
 if(typeof a =='number') {
 return "Я прыгнул на " + a * 100 + " сантиметров";
