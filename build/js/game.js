@@ -68,7 +68,15 @@
     UP: 4,
     DOWN: 8
   };
-
+  /**
+   * Сообщения
+   */
+  var Message = {
+    'INTRO': 'Используй стрелки для перемешения мага, shift для вызова файербола, пробел - для паузы.',
+    'PAUSE': 'Пауза',
+    'WIN': 'Победа!!!!!!!',
+    'FAIL': 'Время вышло! Ты проиграл! Нажми пробел чтобы начать сначала'
+  };
   /**
    * Правила перерисовки объектов в зависимости от состояния игры.
    * @type {Object.<ObjectType, function(Object, Object, number): Object>}
@@ -83,46 +91,46 @@
    * @param {Object} state
    * @param {number} timeframe
    */
-  ObjectsBehaviour[ObjectType.ME] = function(object, state, timeframe) {
-    // Пока зажата стрелка вверх, маг сначала поднимается, а потом левитирует
-    // в воздухе на определенной высоте.
-    // NB! Сложность заключается в том, что поведение описано в координатах
-    // канваса, а не координатах, относительно нижней границы игры.
-    if (state.keysPressed.UP && object.y > 0) {
-      object.direction = object.direction & ~Direction.DOWN;
-      object.direction = object.direction | Direction.UP;
-      object.y -= object.speed * timeframe * 2;
+   ObjectsBehaviour[ObjectType.ME] = function(object, state, timeframe) {
+     // Пока зажата стрелка вверх, маг сначала поднимается, а потом левитирует
+     // в воздухе на определенной высоте.
+     // NB! Сложность заключается в том, что поведение описано в координатах
+     // канваса, а не координатах, относительно нижней границы игры.
+     if (state.keysPressed.UP && object.y > 0) {
+       object.direction = object.direction & ~Direction.DOWN;
+       object.direction = object.direction | Direction.UP;
+       object.y -= object.speed * timeframe * 2;
 
-      if (object.y < 0) {
-        object.y = 0;
-      }
-    }
+       if (object.y < 0) {
+         object.y = 0;
+       }
+     }
 
-    // Если стрелка вверх не зажата, а маг находится в воздухе, он плавно
-    // опускается на землю.
-    if (!state.keysPressed.UP) {
-      if (object.y < HEIGHT - object.height) {
-        object.direction = object.direction & ~Direction.UP;
-        object.direction = object.direction | Direction.DOWN;
-        object.y += object.speed * timeframe / 3;
-      } else {
-        object.Direction = object.direction & ~Direction.DOWN;
-      }
-    }
+     // Если стрелка вверх не зажата, а маг находится в воздухе, он плавно
+     // опускается на землю.
+     if (!state.keysPressed.UP) {
+       if (object.y < HEIGHT - object.height) {
+         object.direction = object.direction & ~Direction.UP;
+         object.direction = object.direction | Direction.DOWN;
+         object.y += object.speed * timeframe / 3;
+       } else {
+         object.Direction = object.direction & ~Direction.DOWN;
+       }
+     }
 
-    // Если зажата стрелка влево, маг перемещается влево.
-    if (state.keysPressed.LEFT) {
-      object.direction = object.direction & ~Direction.RIGHT;
-      object.direction = object.direction | Direction.LEFT;
-      object.x -= object.speed * timeframe;
-    }
+     // Если зажата стрелка влево, маг перемещается влево.
+     if (state.keysPressed.LEFT) {
+       object.direction = object.direction & ~Direction.RIGHT;
+       object.direction = object.direction | Direction.LEFT;
+       object.x -= object.speed * timeframe;
+     }
 
-    // Если зажата стрелка вправо, маг перемещается вправо.
-    if (state.keysPressed.RIGHT) {
-      object.direction = object.direction & ~Direction.LEFT;
-      object.direction = object.direction | Direction.RIGHT;
-      object.x += object.speed * timeframe;
-    }
+     // Если зажата стрелка вправо, маг перемещается вправо.
+     if (state.keysPressed.RIGHT) {
+       object.direction = object.direction & ~Direction.LEFT;
+       object.direction = object.direction | Direction.RIGHT;
+       object.x += object.speed * timeframe;
+     }
 
     // Ограничения по перемещению по полю. Маг не может выйти за пределы поля.
     if (object.y < 0) {
@@ -374,28 +382,108 @@
       }
     },
 
-    /**
-     * Отрисовка экрана паузы.
-     */
     _drawPauseScreen: function() {
+      var x0 = 320;
+      var y0 = 260;
+      var x1 = x0 + 20;
+      var y1 = y0 - 40;
+      var x2 = x1 - 35;
+      var y2 = y1 + 5;
+      var x3 = x2 + 15;
+      var y3 = y2 - 35;
+      var x4 = x3 + 20;
+      var y4 = y3 - 5;
+      var x5 = x4 - 115;
+      var y5 = y4 + 8;
+      var x6 = x5 - 10;
+      var y6 = y5 - 130;
+      var x7 = x6 + 235;
+      var y7 = y6 + 10;
+      var x8 = x7 - 5;
+      var y8 = y7 + 105;
+      var x9 = x8 - 70;
+      var y9 = y8 + 5;
+      var x10 = x9 - 30;
+      var y10 = y9 + 25;
+      var x11 = x10 + 40;
+      var y11 = y10 - 5;
+
+      this.ctx.fillStyle = '#ffffff';
+      this.ctx.beginPath();
+      this.ctx.moveTo(x0, y0);
+      this.ctx.lineTo(x1, y1);
+      this.ctx.lineTo(x2, y2);
+      this.ctx.lineTo(x3, y3);
+      this.ctx.lineTo(x4, y4);
+      this.ctx.lineTo(x5, y5);
+      this.ctx.lineTo(x6, y6);
+      this.ctx.lineTo(x7, y7);
+      this.ctx.lineTo(x8, y8);
+      this.ctx.lineTo(x9, y9);
+      this.ctx.lineTo(x10, y10);
+      this.ctx.lineTo(x11, y11);
+      this.ctx.lineTo(x0, y0);
+      this.ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+      this.ctx.shadowOffsetX = 10;
+      this.ctx.shadowOffsetY = 10;
+      this.ctx.closePath();
+      this.ctx.fill();
+
+      var bubbleWidth = x8 - x5 - 8;
+      var lineHeight = 20;
+
+
+      function wrapMessage(ctx, bubbleText, x, y, bubbleWidth, lineHeight) {
+        // строку - в массив Words
+        var Words = bubbleText.split(' ');
+        var line = '';
+        for(var i = 0; i < Words.length; i++) {
+          var testLine = line + Words[i] + ' ';
+          var size = ctx.measureText(testLine);
+          var testWidth = size.width;
+          if (testWidth > bubbleWidth > 0) {
+            ctx.fillText(line, x, y);
+            line = Words[i] + ' ';
+            y += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line, x, y);
+      }
+
+      var x = x6 + 20;
+      var y = y6 + 30;
+
+      this.ctx.fillStyle = '#000000';
+      this.ctx.font = '16px PT Mono';
+      this.ctx.shadowOffsetX = 0;
+      this.ctx.shadowOffsetY = 0;
+
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          var bubbleText = Message.WIN;
+          wrapMessage(this.ctx, bubbleText, x, y, bubbleWidth, lineHeight);
           break;
+
         case Verdict.FAIL:
-          console.log('you have failed!');
+          bubbleText = Message.FAIL;
+          wrapMessage(this.ctx, bubbleText, x, y, bubbleWidth, lineHeight);
           break;
+
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          bubbleText = Message.PAUSE;
+          wrapMessage(this.ctx, bubbleText, x, y, bubbleWidth, lineHeight);
           break;
+
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
-          break;
+          bubbleText = Message.INTRO;
+          wrapMessage(this.ctx, bubbleText, x, y, bubbleWidth, lineHeight);
       }
     },
 
     /**
-     * Предзагрузка необходимых изображений для уровня.
+     * Предзагрузка необxодимых изображений для уровня.
      * @param {function} callback
      * @private
      */
