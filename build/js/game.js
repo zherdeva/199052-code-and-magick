@@ -68,6 +68,7 @@
     UP: 4,
     DOWN: 8
   };
+
   /**
    * Сообщения
    */
@@ -77,6 +78,7 @@
     'WIN': 'Победа!!!!!!!',
     'FAIL': 'Время вышло! Ты проиграл! Нажми пробел чтобы начать сначала'
   };
+
   /**
    * Правила перерисовки объектов в зависимости от состояния игры.
    * @type {Object.<ObjectType, function(Object, Object, number): Object>}
@@ -91,46 +93,46 @@
    * @param {Object} state
    * @param {number} timeframe
    */
-   ObjectsBehaviour[ObjectType.ME] = function(object, state, timeframe) {
-     // Пока зажата стрелка вверх, маг сначала поднимается, а потом левитирует
-     // в воздухе на определенной высоте.
-     // NB! Сложность заключается в том, что поведение описано в координатах
-     // канваса, а не координатах, относительно нижней границы игры.
-     if (state.keysPressed.UP && object.y > 0) {
-       object.direction = object.direction & ~Direction.DOWN;
-       object.direction = object.direction | Direction.UP;
-       object.y -= object.speed * timeframe * 2;
+  ObjectsBehaviour[ObjectType.ME] = function(object, state, timeframe) {
+    // Пока зажата стрелка вверх, маг сначала поднимается, а потом левитирует
+    // в воздухе на определенной высоте.
+    // NB! Сложность заключается в том, что поведение описано в координатах
+    // канваса, а не координатах, относительно нижней границы игры.
+    if (state.keysPressed.UP && object.y > 0) {
+      object.direction = object.direction & ~Direction.DOWN;
+      object.direction = object.direction | Direction.UP;
+      object.y -= object.speed * timeframe * 2;
 
-       if (object.y < 0) {
-         object.y = 0;
-       }
-     }
+      if (object.y < 0) {
+        object.y = 0;
+      }
+    }
 
-     // Если стрелка вверх не зажата, а маг находится в воздухе, он плавно
-     // опускается на землю.
-     if (!state.keysPressed.UP) {
-       if (object.y < HEIGHT - object.height) {
-         object.direction = object.direction & ~Direction.UP;
-         object.direction = object.direction | Direction.DOWN;
-         object.y += object.speed * timeframe / 3;
-       } else {
-         object.Direction = object.direction & ~Direction.DOWN;
-       }
-     }
+    // Если стрелка вверх не зажата, а маг находится в воздухе, он плавно
+    // опускается на землю.
+    if (!state.keysPressed.UP) {
+      if (object.y < HEIGHT - object.height) {
+        object.direction = object.direction & ~Direction.UP;
+        object.direction = object.direction | Direction.DOWN;
+        object.y += object.speed * timeframe / 3;
+      } else {
+        object.Direction = object.direction & ~Direction.DOWN;
+      }
+    }
 
-     // Если зажата стрелка влево, маг перемещается влево.
-     if (state.keysPressed.LEFT) {
-       object.direction = object.direction & ~Direction.RIGHT;
-       object.direction = object.direction | Direction.LEFT;
-       object.x -= object.speed * timeframe;
-     }
+    // Если зажата стрелка влево, маг перемещается влево.
+    if (state.keysPressed.LEFT) {
+      object.direction = object.direction & ~Direction.RIGHT;
+      object.direction = object.direction | Direction.LEFT;
+      object.x -= object.speed * timeframe;
+    }
 
-     // Если зажата стрелка вправо, маг перемещается вправо.
-     if (state.keysPressed.RIGHT) {
-       object.direction = object.direction & ~Direction.LEFT;
-       object.direction = object.direction | Direction.RIGHT;
-       object.x += object.speed * timeframe;
-     }
+    // Если зажата стрелка вправо, маг перемещается вправо.
+    if (state.keysPressed.RIGHT) {
+      object.direction = object.direction & ~Direction.LEFT;
+      object.direction = object.direction | Direction.RIGHT;
+      object.x += object.speed * timeframe;
+    }
 
     // Ограничения по перемещению по полю. Маг не может выйти за пределы поля.
     if (object.y < 0) {
@@ -382,6 +384,9 @@
       }
     },
 
+    /**
+     * Отрисовка экрана паузы.
+     */
     _drawPauseScreen: function() {
       var x0 = 320;
       var y0 = 260;
@@ -432,9 +437,8 @@
       var bubbleWidth = x8 - x5 - 8;
       var lineHeight = 20;
 
-
-      function wrapMessage(ctx, bubbleText, x, y, bubbleWidth, lineHeight) {
-        // строку - в массив Words
+      function wrapMessage(ctx, bubbleText, x, y) {
+         // строку - в массив Words
         var Words = bubbleText.split(' ');
         var line = '';
         for(var i = 0; i < Words.length; i++) {
@@ -451,7 +455,6 @@
         }
         ctx.fillText(line, x, y);
       }
-
       var x = x6 + 20;
       var y = y6 + 30;
 
@@ -481,9 +484,8 @@
           wrapMessage(this.ctx, bubbleText, x, y, bubbleWidth, lineHeight);
       }
     },
-
     /**
-     * Предзагрузка необxодимых изображений для уровня.
+     * Предзагрузка необходимых изображений для уровня.
      * @param {function} callback
      * @private
      */
