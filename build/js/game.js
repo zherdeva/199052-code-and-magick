@@ -91,7 +91,7 @@
    * @param {Object} state
    * @param {number} timeframe
    */
-    ObjectsBehaviour[ObjectType.ME = function(object, state, timeframe) {
+   ObjectsBehaviour[ObjectType.ME] = function(object, state, timeframe) {
      // Пока зажата стрелка вверх, маг сначала поднимается, а потом левитирует
      // в воздухе на определенной высоте.
      // NB! Сложность заключается в том, что поведение описано в координатах
@@ -152,7 +152,7 @@
     if (object.x > WIDTH - object.width) {
       object.x = WIDTH - object.width;
     }
-  }
+  };
 
   /**
    * Обновление движения файрбола. Файрбол выпускается в определенном направлении
@@ -163,17 +163,17 @@
    * @param {number} timeframe
    */
   ObjectsBehaviour[ObjectType.FIREBALL] = function(object, state, timeframe) {
-     if (object.direction & Direction.LEFT) {
-       object.x -= object.speed * timeframe;
-     }
+    if (object.direction & Direction.LEFT) {
+      object.x -= object.speed * timeframe;
+    }
 
-     if (object.direction & Direction.RIGHT) {
-       object.x += object.speed * timeframe;
-     }
+    if (object.direction & Direction.RIGHT) {
+      object.x += object.speed * timeframe;
+    }
 
-     if (object.x < 0 || object.x > WIDTH) {
-       object.state = ObjectState.DISPOSED;
-     }
+    if (object.x < 0 || object.x > WIDTH) {
+      object.state = ObjectState.DISPOSED;
+    }
   };
 
   /**
